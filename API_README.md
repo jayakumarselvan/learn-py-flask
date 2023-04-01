@@ -25,9 +25,9 @@ https://flask.palletsprojects.com/en/2.2.x/installation/
 Base URL: `http://127.0.0.1:5000/api/v1`
 #### Listing the average prices for each day
 
-
+</br>
  <summary><code>GET</code>: <code><b>/rates</b></code></summary>
-
+</br>
 ##### Parameters
 
 > | name      |  type     | data type | description |
@@ -147,3 +147,15 @@ Base URL: `http://127.0.0.1:5000/api/v1`
   "status": false
 }
 ```
+
+##### If our system maintains like orig_code and dest_code is ( only 5 chars with upper case ) and parent_slug should not ( only 5 chars with upper case ) then we can use the below API
+</br>
+ <summary><code>GET</code>: <code><b>/rates-list</b></code></summary>
+</br>
+
+> ```javascript
+> curl -X GET -H "Content-Type: application/json" "http://127.0.0.1:5000/api/v1/rates-list?date_from=2016-01-01&date_to=2016-01-10&origin=CNSGH&destination=north_europe_main&page=1&limit=10"
+> ```
+>```
+>The same above <code>GET</code>: <code><b>/rates</b></code> API's three response will come this API also
+>```

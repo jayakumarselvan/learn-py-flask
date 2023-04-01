@@ -33,8 +33,42 @@ from
     group by pr.day
   ) as result_tbl on result_tbl.day = gs_tbl.gs_day
 order by gs_tbl.gs_day
--- limit 2 offset 4
+-- limit 10 offset 0
 ```
+
+
+If our system maintains like orig_code and dest_code is ( only 5 chars with upper case ) and parent_slug should not ( only 5 chars with upper case ) then we can use the below query while origin and destination input are matched with this rule
+
+```sql
+select
+  to_char(gs_tbl.gs_day, 'YYYY-MM-DD') as "day",
+  result_tbl.average_price
+from
+  (
+    select generate_series.gs_day::date 
+    from generate_series('2016-01-01'::date, '2016-01-10'::date, interval '1 day') as generate_series(gs_day)
+  ) as gs_tbl
+  left join (
+    select 
+      pr."day",
+      (
+        case 
+          when COUNT(1) >=3 then CAST(ROUND(AVG(pr.price))AS INTEGER)
+          else null
+        end
+      ) as average_price
+    from 
+      prices as pr
+    where
+      ( pr.day between '2016-01-01' and '2016-01-10' )
+      and ( pr.orig_code = 'CNSGH' )
+      and ( pr.dest_code = 'EETLL' )
+    group by pr.day
+  ) as result_tbl on result_tbl.day = gs_tbl.gs_day
+order by gs_tbl.gs_day
+-- limit  10 offset 0 
+```
+
 
 We can create **View** if the query is required for multiple places or multiple module or multiple apps
 
@@ -86,7 +120,7 @@ from
     group by vppr.day
   ) as result_tbl on result_tbl.day = gs_tbl.gs_day
 order by gs_tbl.gs_day
--- limit 2 offset 4
+-- limit 10 offset 0
 ```
 
 If periodically, price data is added or updated then we can create **Materialized Views** and refresh the data periodically. It will help to improve performance and to reduce the fetching time

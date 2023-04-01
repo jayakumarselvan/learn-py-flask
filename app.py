@@ -16,7 +16,7 @@ url = os.getenv("DATABASE_URL")
 min_price_count_per_day = int ( os.getenv("MIN_PRICE_COUNT_PER_DAY") )
 pagination_per_page_default_limit = int ( os.getenv("PAGINATION_PER_PAGE_DEFAULT_LIMIT") )
 
-orig_dest_code = 5
+orig_dest_code_length = int ( os.getenv("ORIG_DEST_CODE_LENGTH") )
 
 connection = psycopg2.connect(url)
 
@@ -153,7 +153,7 @@ def get_rates_list():
 
   sql_join_str = ""
   sql_where_str = ""
-  if( ( len(origin) == orig_dest_code and origin.isupper() ) and ( len(destination) == orig_dest_code and destination.isupper() ) ):
+  if( ( len(origin) == orig_dest_code_length and origin.isupper() ) and ( len(destination) == orig_dest_code_length and destination.isupper() ) ):
     sql_where_str = """
       and ( pr.orig_code = '{origin}' )
       and ( pr.dest_code = '{destination}' )
@@ -206,12 +206,9 @@ def get_rates_list():
     """.format(min_price_count_per_day=min_price_count_per_day, date_from=date_from, date_to=date_to, sql_join_str=sql_join_str, sql_where_str=sql_where_str, sql_limit_str=sql_limit_str)
   )
 
-  print(sql_get_rates)
-
   app.logger.info("sql_get_rates")
   app.logger.info(sql_get_rates)
-  # app.logger.info("where_values")
-  # app.logger.info(where_values)
+
   with connection:
     with connection.cursor(cursor_factory=RealDictCursor) as cursor:
       cursor.execute(sql_get_rates)

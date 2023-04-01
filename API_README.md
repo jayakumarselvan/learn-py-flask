@@ -157,5 +157,5 @@ Base URL: `http://127.0.0.1:5000/api/v1`
 > curl -X GET -H "Content-Type: application/json" "http://127.0.0.1:5000/api/v1/rates-list?date_from=2016-01-01&date_to=2016-01-10&origin=CNSGH&destination=north_europe_main&page=1&limit=10"
 > ```
 >```
->The same above <code>GET</code>: <code><b>/rates</b></code> API's three response will come this API also
+>The same above GET: /rates API's three response will come this API also
 >```

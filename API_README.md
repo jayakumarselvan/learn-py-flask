@@ -54,7 +54,7 @@ Base URL: `http://127.0.0.1:5000/api/v1`
 
 ##### Response
 
-```bash
+```json
 [
   {
     "day": "2016-01-01",
@@ -107,7 +107,7 @@ Base URL: `http://127.0.0.1:5000/api/v1`
 
 ##### Response
 
-```bash
+```json
 [
   {
     "day": "2016-01-01",
@@ -140,7 +140,7 @@ Base URL: `http://127.0.0.1:5000/api/v1`
 
 ##### Response
 
-```bash
+```json
 {
   "message": "date_from, date_to, origin, and destination fields are required",
   "code": 400,

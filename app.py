@@ -15,7 +15,6 @@ app = Flask(__name__)
 url = os.getenv("DATABASE_URL")
 min_price_count_per_day = int ( os.getenv("MIN_PRICE_COUNT_PER_DAY") )
 pagination_per_page_default_limit = int ( os.getenv("PAGINATION_PER_PAGE_DEFAULT_LIMIT") )
-
 orig_dest_code_length = int ( os.getenv("ORIG_DEST_CODE_LENGTH") )
 
 connection = psycopg2.connect(url)

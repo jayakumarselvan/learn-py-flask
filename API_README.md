@@ -23,12 +23,14 @@ https://flask.palletsprojects.com/en/2.2.x/installation/
 
 # API
 Base URL: `http://127.0.0.1:5000/api/v1`
-#### Listing the average prices for each day
+#### This API will return a list of the average price for each day
 
 </br>
  <summary><code>GET</code>: <code><b>/rates</b></code></summary>
 </br>
+
 ##### Parameters
+
 
 > | name      |  type     | data type | description |
 > |-----------|-----------|-----------|-------------|

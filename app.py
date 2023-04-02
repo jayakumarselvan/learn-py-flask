@@ -8,15 +8,18 @@ import logging
 # from decimal import Decimal
 load_dotenv()
 
+# set a logging configuration
 logging.basicConfig(filename='log.log', level=logging.INFO)
 
 app = Flask(__name__)
 
+# set a values from config (env)
 url = os.getenv("DATABASE_URL")
 min_price_count_per_day = int ( os.getenv("MIN_PRICE_COUNT_PER_DAY") )
 pagination_per_page_default_limit = int ( os.getenv("PAGINATION_PER_PAGE_DEFAULT_LIMIT") )
 orig_dest_code_length = int ( os.getenv("ORIG_DEST_CODE_LENGTH") )
 
+# establishing database connection
 connection = psycopg2.connect(url)
 
 # class DecimalEncoder(json.JSONEncoder):
@@ -25,6 +28,7 @@ connection = psycopg2.connect(url)
 #             return str(o)
 #         return super().default(o)
 
+# This API will return a list of the average price for each day
 @app.get("/api/v1/rates")
 def get_rates():
 
@@ -55,9 +59,7 @@ def get_rates():
   
   sql_limit_str = ""
   if( current_page is not None and current_page > 0 ):
-
     skip_val = per_page * (current_page - 1)
-
     sql_limit_str = " limit  {} offset {} ".format(per_page, skip_val)
 
   where_values = ( date_from, date_to, min_price_count_per_day, date_from, date_to, origin, origin, origin, destination, destination, destination )
@@ -117,6 +119,7 @@ def get_rates():
   return response
 
 
+# This API will return a list of the average price for each day
 @app.get("/api/v1/rates-list")
 def get_rates_list():
 

@@ -6,6 +6,7 @@ from psycopg2.extras import RealDictCursor
 import json
 import logging
 # from decimal import Decimal
+from datetime import datetime
 load_dotenv()
 
 # set a logging configuration
@@ -148,10 +149,17 @@ def get_rates_list():
     )
     return response
   
+
+  response_data = {}
+  no_of_days = get_no_of_days_between_two_dates(date_from, date_to)
+  response_data["total"] = ( no_of_days + 1 )
+
   sql_limit_str = ""
   if( current_page is not None and current_page > 0 ):
     skip_val = per_page * (current_page - 1)
     sql_limit_str = " limit  {} offset {} ".format(per_page, skip_val)
+    response_data["limit"] = per_page
+    response_data["page"] = current_page
 
   sql_join_str = ""
   sql_where_str = ""
@@ -215,15 +223,26 @@ def get_rates_list():
     with connection.cursor(cursor_factory=RealDictCursor) as cursor:
       cursor.execute(sql_get_rates)
       rates = cursor.fetchall()
+      response_data["count"] = len(rates)
+      response_data["data"] = rates
+      response_data["message"] = "rates.list"
+      response_data["code"] = 200
+      response_data["status"] = True
 
   response = app.response_class(
     # cls=DecimalEncoder is not required for this api
     # response=json.dumps(rates, cls=DecimalEncoder), 
-    response=json.dumps(rates), 
+    response=json.dumps(response_data), 
     status=200, 
     mimetype='application/json'
   )
   return response
+
+def get_no_of_days_between_two_dates(from_str_d1, to_str_d2):
+  d1 = datetime.strptime(from_str_d1, "%Y-%m-%d")
+  d2 = datetime.strptime(to_str_d2, "%Y-%m-%d")
+  delta = d2 - d1
+  return delta.days
 
 @app.get("/")
 def home():
